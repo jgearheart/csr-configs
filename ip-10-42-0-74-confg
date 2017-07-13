@@ -1,0 +1,187 @@
+
+!
+! Last configuration change at 19:27:41 UTC Thu Jul 13 2017 by ec2-user
+!
+version 16.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console virtual
+!
+hostname ip-10-42-0-74
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging persistent size 1000000 filesize 8192 immediate
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3768467574
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3768467574
+ revocation-check none
+ rsakeypair TP-self-signed-3768467574
+!
+!
+crypto pki certificate chain TP-self-signed-3768467574
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 33373638 34363735 3734301E 170D3137 30373133 31373538 
+  32325A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D33 37363834 
+  36373537 34308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 01008E57 86B6BAFE DCF75328 BE7F6BEA 6406EE90 3335BAF6 707B3F47 
+  B6035C65 78DB5181 6F8B195C 7FBF6163 9A7FC00D 9D338FAB 4FDF4DB4 D67C79FD 
+  D0074F55 F5BD8405 5871725E 2A341A67 98A838D1 FCB26C2A E8835C08 7DA23401 
+  27BC237F 7750C8BB 32BEFED8 5819CC9E 3ED10438 03003175 B6EC8269 79CB0540 
+  64A348F0 3B652D15 C0BCFC3E A1329105 38A0087B 44BBEB99 D23E9F8A 9DA373F6 
+  1C663877 19A85516 F627456A 201EF30E 589E20A0 10414405 1873BD21 0981375C 
+  9ECD3924 018EEB16 949A76E8 AB4D8A05 53DA49AE 0E0C9433 D5816DDD 4FFE0836 
+  8E4DDCD2 2A12BFA7 F1125E80 EB32A1DB C94A019E E9A6B44B 0130AF2E 936CD19D 
+  D4C54174 E21B0203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 
+  301F0603 551D2304 18301680 142DE7CA 7A8E132E 3889EA18 FBB36E09 46E1E0C1 
+  24301D06 03551D0E 04160414 2DE7CA7A 8E132E38 89EA18FB B36E0946 E1E0C124 
+  300D0609 2A864886 F70D0101 05050003 82010100 59CA0D95 719E7B2C 7B439D69 
+  9A44EEC9 36743CB6 488DACC0 15EE09D6 DD39668B 1A109ACF 0B40CD4B 9BBC247A 
+  3FAE6FFE 87E5FB42 CB3F144A 7749A3E8 5080F837 AE4E72A5 D29BA307 A53FA0D1 
+  D93F3584 3E175C87 698E15D9 0F9C8447 19CBFCE0 BF970399 F001646A D465148C 
+  321349F9 20550B0A 9895EB9A F2AD8B3A 12895B9D 6E6D2442 9EA51ABE F3EC651E 
+  AE734400 29D7EF00 7F705CB1 2E368EE1 8148EEBC 096B08D6 82C5C688 D5601C46 
+  4D37492B D4A2195F EB8C894D 150B325A 955045AE A0B74C79 4EBAC95A 435678D7 
+  13F6F65E E9918E65 37673A3E 23EAB116 FEB58F05 65AF6299 2697210B 0491ED77 
+  60C99F4C CB6532D4 999D5C75 DC7EA5F8 F6D2D827
+  	quit
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9O47NO84JF6
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username ec2-user privilege 15 secret 5 $1$6lra$HIWbYR/.PBKns25zaq.mu/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface GigabitEthernet1
+ description test
+ ip address dhcp
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+
+threat-visibility
+!
+virtual-service csr_mgmt
+ ip shared host-interface GigabitEthernet1
+ activate
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet1 10.42.0.1
+!
+ip ssh rsa keypair-name ssh-key
+ip ssh version 2
+ip ssh pubkey-chain
+  username ec2-user
+   key-hash ssh-rsa FCAF4E517620F2DFBA1E3320F2C9D8F7 ec2-user
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip scp server enable
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+!
+line con 0
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+!
+!
+!
+!
+end
